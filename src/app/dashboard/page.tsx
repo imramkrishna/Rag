@@ -98,7 +98,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <dt className="font-medium">Created:</dt>
-                  <dd>{new Date(session.user.createdAt).toLocaleDateString()}</dd>
+                  <dd>{new Date(session.user.createdAt).toLocaleDateString('en:US')}</dd>
                 </div>
               </dl>
             </div>
