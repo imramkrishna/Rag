@@ -1,5 +1,6 @@
+"use server"
 import "dotenv/config"
-export const Secrets={
+export const serverSecrets={
     S3_BUCKET_NAME:process.env.S3_BUCKET_NAME,
     S3_API_ENDPOINT:process.env.S3_API_ENDPOINT,
     S3_ACCESS_KEY_ID:process.env.S3_ACCESS_KEY_ID,
@@ -9,4 +10,4 @@ export const Secrets={
     BETTER_AUTH_SECRET:process.env.BETTER_AUTH_SECRET
 }
 
-export default Secrets
+export default serverSecrets;

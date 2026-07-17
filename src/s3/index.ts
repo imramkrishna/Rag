@@ -1,11 +1,10 @@
-import Secrets from "@/app/secrets";
 import { S3 } from "aws-sdk";
-
+import serverSecrets from "@/app/secrets/server";
 const s3 = new S3({
   region: "auto",
-  endpoint: Secrets.S3_API_ENDPOINT,
-  accessKeyId: Secrets.S3_ACCESS_KEY_ID,
-  secretAccessKey: Secrets.S3_SECRET_ACCESS_KEY,
+  endpoint: serverSecrets.S3_API_ENDPOINT,
+  accessKeyId: serverSecrets.S3_ACCESS_KEY_ID,
+  secretAccessKey: serverSecrets.S3_SECRET_ACCESS_KEY,
 });
 
 
