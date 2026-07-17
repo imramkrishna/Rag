@@ -24,7 +24,7 @@ async function uploadFile(file: File) {
         })
         .promise();
 
-    return uploaded.Location;
+    return uploaded.Location
 }
 
 export default uploadFile;

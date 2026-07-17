@@ -9,7 +9,6 @@ export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
-  const [alias, setAlias] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [uploadError, setUploadError] = useState("");
@@ -53,7 +52,6 @@ export default function DashboardPage() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("alias", alias);
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -68,7 +66,6 @@ export default function DashboardPage() {
 
       setUploadedUrl(data.url || "");
       setFile(null);
-      setAlias("");
       event.currentTarget.reset();
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : "Upload failed");
@@ -176,18 +173,6 @@ export default function DashboardPage() {
             </div>
 
             <form onSubmit={handleUpload} className="grid gap-4 md:grid-cols-2">
-              <label className="flex flex-col gap-2 md:col-span-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Alias name
-                </span>
-                <input
-                  type="text"
-                  value={alias}
-                  onChange={(event) => setAlias(event.target.value)}
-                  placeholder="Project brief, invoice copy, research note..."
-                  className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white outline-none focus:border-indigo-500"
-                />
-              </label>
 
               <label className="flex flex-col gap-2 md:col-span-2">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -229,7 +214,7 @@ export default function DashboardPage() {
 
               {uploadedUrl ? (
                 <p className="md:col-span-2 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700 dark:bg-green-950 dark:text-green-300">
-                  Uploaded successfully. Alias sent to backend: {alias || "(empty)"}
+                  Uploaded successfully.
                 </p>
               ) : null}
             </form>

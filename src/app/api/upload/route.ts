@@ -1,3 +1,5 @@
+import { db } from "@/db";
+import { fileUpload } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import uploadFile from "@/s3/upload";
 import { headers } from "next/headers";
@@ -34,7 +36,13 @@ export async function POST(req: NextRequest) {
     }
 
     const url = await uploadFile(file);
-    
+    const result=await db.insert(fileUpload).values({
+      userId:session.user.id,
+      fileName:file.name,
+      fileType:file.type,
+      filePath:url,
+    }).returning()
+    console.log("Uploaded",result)
     return NextResponse.json({
       success: true,
       url,

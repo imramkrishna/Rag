@@ -1,4 +1,3 @@
-"use server"
 import "dotenv/config"
 export const serverSecrets={
     S3_BUCKET_NAME:process.env.S3_BUCKET_NAME,
