@@ -1,13 +1,18 @@
 "use client";
 
 import { useSession } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const [file, setFile] = useState<File | null>(null);
+  const [alias, setAlias] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadedUrl, setUploadedUrl] = useState("");
+  const [uploadError, setUploadError] = useState("");
 
   useEffect(() => {
     if (!isPending && !session) {
@@ -31,6 +36,45 @@ export default function DashboardPage() {
     await signOut();
     router.push("/auth/login");
     router.refresh();
+  };
+
+  const handleUpload = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setUploadError("");
+    setUploadedUrl("");
+
+    if (!file) {
+      setUploadError("Please choose a file first.");
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("alias", alias);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || data?.message || "Upload failed");
+      }
+
+      setUploadedUrl(data.url || "");
+      setFile(null);
+      setAlias("");
+      event.currentTarget.reset();
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -98,7 +142,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <dt className="font-medium">Created:</dt>
-                  <dd>{new Date(session.user.createdAt).toLocaleDateString('en:US')}</dd>
+                  <dd>{new Date(session.user.createdAt).toLocaleDateString("en-US")}</dd>
                 </div>
               </dl>
             </div>
@@ -119,6 +163,76 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-sm">
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Upload file
+              </h3>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+                Upload a file and give it an alias that the backend can read from the same form submission.
+              </p>
+            </div>
+
+            <form onSubmit={handleUpload} className="grid gap-4 md:grid-cols-2">
+              <label className="flex flex-col gap-2 md:col-span-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Alias name
+                </span>
+                <input
+                  type="text"
+                  value={alias}
+                  onChange={(event) => setAlias(event.target.value)}
+                  placeholder="Project brief, invoice copy, research note..."
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-4 py-3 text-gray-900 dark:text-white outline-none focus:border-indigo-500"
+                />
+              </label>
+
+              <label className="flex flex-col gap-2 md:col-span-2">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                  File
+                </span>
+                <input
+                  type="file"
+                  onChange={(event) => setFile(event.target.files?.[0] || null)}
+                  className="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 px-4 py-3 text-sm text-gray-700 dark:text-gray-300"
+                />
+              </label>
+
+              <div className="md:col-span-2 flex flex-wrap items-center gap-3">
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-400"
+                >
+                  {uploading ? "Uploading..." : "Upload file"}
+                </button>
+
+                {uploadedUrl ? (
+                  <a
+                    href={uploadedUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                  >
+                    View uploaded file
+                  </a>
+                ) : null}
+              </div>
+
+              {uploadError ? (
+                <p className="md:col-span-2 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+                  {uploadError}
+                </p>
+              ) : null}
+
+              {uploadedUrl ? (
+                <p className="md:col-span-2 rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700 dark:bg-green-950 dark:text-green-300">
+                  Uploaded successfully. Alias sent to backend: {alias || "(empty)"}
+                </p>
+              ) : null}
+            </form>
           </div>
         </div>
       </main>
