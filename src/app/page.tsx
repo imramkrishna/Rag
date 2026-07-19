@@ -1,64 +1,104 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            New Page
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.18),transparent_32%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_45%,#ffffff_100%)] text-slate-900">
+      <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-8 lg:px-10">
+        <header className="flex items-center justify-between rounded-full border border-white/60 bg-white/70 px-5 py-3 shadow-sm backdrop-blur">
+          <div>
+            <p className="text-sm font-semibold tracking-[0.2em] text-indigo-600 uppercase">
+              RAG Vault
+            </p>
+          </div>
+          <div className="flex items-center gap-3 text-sm font-medium">
+            <Link
+              href="/auth/login"
+              className="rounded-full px-4 py-2 text-slate-700 transition-colors hover:bg-slate-100"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Sign in
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-full bg-slate-900 px-4 py-2 text-white transition-colors hover:bg-slate-700"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              Open dashboard
+            </Link>
+          </div>
+        </header>
+
+        <section className="grid flex-1 items-center gap-12 py-12 lg:grid-cols-[1.15fr_0.85fr] lg:py-16">
+          <div className="max-w-2xl">
+            <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1 text-sm font-medium text-indigo-700">
+              Upload files with aliases and store them in S3
+            </span>
+            <h1 className="mt-6 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+              A simple home for your uploaded files and file aliases.
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+              Use the dashboard to upload a file, attach an alias, and send both values to the backend in one request. The file lands in S3 and the alias can be stored alongside it for later lookup.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition-transform hover:-translate-y-0.5 hover:bg-indigo-700"
+              >
+                Go to dashboard
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50"
+              >
+                Create account
+              </Link>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur">
+                <p className="text-sm font-semibold text-slate-900">S3 upload</p>
+                <p className="mt-1 text-sm text-slate-600">Files are sent straight to your bucket.</p>
+              </div>
+              <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur">
+                <p className="text-sm font-semibold text-slate-900">Alias support</p>
+                <p className="mt-1 text-sm text-slate-600">Capture a friendly name with the upload.</p>
+              </div>
+              <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur">
+                <p className="text-sm font-semibold text-slate-900">Backend ready</p>
+                <p className="mt-1 text-sm text-slate-600">Read the alias from multipart form data.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 -z-10 translate-x-6 translate-y-6 rounded-[2rem] bg-indigo-200/50 blur-3xl" />
+            <div className="rounded-[2rem] border border-white/70 bg-slate-950 p-6 text-slate-100 shadow-2xl shadow-slate-950/20">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                  <p className="text-sm text-slate-400">Upload preview</p>
+                  <p className="text-lg font-semibold">Multipart request payload</p>
+                </div>
+                <div className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-300">
+                  Live
+                </div>
+              </div>
+
+              <div className="mt-5 space-y-4 text-sm">
+                <div className="rounded-2xl bg-white/5 p-4">
+                  <p className="text-slate-400">Field</p>
+                  <p className="mt-1 font-medium text-white">file</p>
+                </div>
+                <div className="rounded-2xl bg-white/5 p-4">
+                  <p className="text-slate-400">Field</p>
+                  <p className="mt-1 font-medium text-white">alias</p>
+                </div>
+                <div className="rounded-2xl bg-white/5 p-4">
+                  <p className="text-slate-400">Backend read</p>
+                  <p className="mt-1 font-medium text-white">formData.get(&quot;alias&quot;)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
