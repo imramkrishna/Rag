@@ -24,7 +24,7 @@ async function uploadFile(file: File) {
         })
         .promise();
 
-    return uploaded.Location
+    return `${serverSecrets.S3_PUBLIC_URL}/${key}`
 }
 
 export default uploadFile;

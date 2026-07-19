@@ -6,7 +6,8 @@ export const serverSecrets={
     S3_SECRET_ACCESS_KEY:process.env.S3_SECRET_ACCESS_KEY,
     DATABASE_URL:process.env.DATABASE_URL,
     BETTER_AUTH_URL:process.env.BETTER_AUTH_URL,
-    BETTER_AUTH_SECRET:process.env.BETTER_AUTH_SECRET
+    BETTER_AUTH_SECRET:process.env.BETTER_AUTH_SECRET,
+    S3_PUBLIC_URL:process.env.S3_PUBLIC_URL
 }
 
 export default serverSecrets;
